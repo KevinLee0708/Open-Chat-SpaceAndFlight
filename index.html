@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>멀티 카운트다운</title>
+<style>
+    body {
+        font-family: Arial;
+        background: #111;
+        color: white;
+        text-align: center;
+        padding: 30px;
+    }
+
+    .card {
+        background: #222;
+        margin: 10px auto;
+        padding: 15px;
+        width: 350px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    .name {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .time {
+        color: #00ffcc;
+    }
+</style>
+</head>
+<body>
+
+<h1>⏳ 일정 카운트다운</h1>
+<div id="container"></div>
+
+<script>
+// =======================
+// 📌 여러 일정 JSON
+// =======================
+const data = [
+  { name: "행복한 한화팬님 여프", date: "2026-06-03T00:00:00" },
+  { name: "짭판다님 여프", date: "2026-06-03T00:00:00" },
+  { name: "모노님 냥냥채", date: "2026-06-03T00:00:00" }
+];
+
+// =======================
+// ⏱️ 계산 + 렌더링
+// =======================
+function update() {
+    const container = document.getElementById("container");
+    container.innerHTML = "";
+
+    const now = new Date().getTime();
+
+    data.forEach(item => {
+        const target = new Date(item.date).getTime();
+        let diff = target - now;
+
+        let text = "";
+
+        if (diff <= 0) {
+            text = "🎉 완료!";
+        } else {
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            diff %= (1000 * 60 * 60 * 24);
+
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            diff %= (1000 * 60 * 60);
+
+            const minutes = Math.floor(diff / (1000 * 60));
+            diff %= (1000 * 60);
+
+            const seconds = Math.floor(diff / 1000);
+
+            text = `${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
+        }
+
+        container.innerHTML += `
+            <div class="card">
+                <div class="name">${item.name}</div>
+                <div class="time">${text}</div>
+            </div>
+        `;
+    });
+}
+
+setInterval(update, 1000);
+update();
+</script>
+
+</body>
+</html>
