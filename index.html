@@ -13,7 +13,10 @@
 <header class="navbar">
   <div class="logo">🎮 HOME</div>
 
-  <nav class="menu">
+  <!-- 햄버거 버튼 (모바일) -->
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+  <nav class="menu" id="menu">
     <a href="https://kevinlee0708.github.io/Open-Chat-SpaceAndFlight/">홈</a>
     <a href="roulette.html">룰렛 서비스</a>
     <a href="https://kevinlee0708.github.io/Open-Chat-SpaceAndFlight/penalty/">멸망 벌칙 리스트</a>
@@ -33,7 +36,7 @@
 
     <a class="btn" href="roulette.html">🎰 룰렛 돌리기</a>
 
-    <a class="btn danger" href="dday.html">⏳ 멸망 벌칙 리스트 보기</a>
+    <a class="btn danger" href="https://kevinlee0708.github.io/Open-Chat-SpaceAndFlight/penalty/">⏳ 멸망 벌칙 리스트 보기</a>
 
   </div>
 
@@ -51,6 +54,10 @@ function scrollAnimation() {
       el.classList.add("show");
     }
   });
+}
+function toggleMenu() {
+  const menu = document.getElementById("menu");
+  menu.classList.toggle("active");
 }
 
 window.addEventListener("scroll", scrollAnimation);
