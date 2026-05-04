@@ -17,7 +17,7 @@ body {
   z-index: 1000;
 }
 
-/* 상단 */
+/* 상단바 */
 .topbar {
   height: 60px;
   display: flex;
@@ -37,11 +37,13 @@ body {
   cursor: pointer;
 }
 
-/* 메뉴 (PC) */
+/* ===== 메뉴 (공통 핵심) ===== */
 .menu {
   display: flex;
   gap: 15px;
   padding: 10px 20px;
+
+  transition: transform 0.3s ease;
 }
 
 .menu a {
@@ -93,7 +95,7 @@ body {
   background: #c40000;
 }
 
-/* ===== SCROLL ===== */
+/* ===== SCROLL 애니메이션 ===== */
 .scroll-item {
   opacity: 0;
   transform: translateY(30px);
@@ -106,8 +108,6 @@ body {
 }
 
 /* ===== MOBILE ===== */
-
-
 @media (max-width: 768px) {
 
   .hamburger {
@@ -115,7 +115,6 @@ body {
   }
 
   .menu {
-    display: flex;
     flex-direction: column;
     background: #111;
 
@@ -124,9 +123,8 @@ body {
     left: 0;
     width: 100%;
 
+    /* 핵심: display 안 씀 */
     transform: translateY(-120%);
-    transition: transform 0.3s ease;
-
     z-index: 999;
   }
 
