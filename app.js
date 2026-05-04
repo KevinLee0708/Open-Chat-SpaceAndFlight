@@ -1,6 +1,7 @@
 // =======================
 // 🔥 Firebase 설정 (너 프로젝트 값 넣기)
 // =======================
+alert("app.js 실행됨");
 const firebaseConfig = {
   apiKey: "AIzaSyCNNbsbuyLDfZN8XB5uzexBNaNA_MuJ8QI",
   authDomain: "website-kevinlee0708.firebaseapp.com",
