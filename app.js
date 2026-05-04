@@ -138,6 +138,13 @@ update();    container.innerHTML = "";
 db.collection("Dday").get().then(snap => {
     alert("문서 개수: " + snap.size);
 });
+db.collection("Dday").get()
+  .then(snap => {
+      alert("문서 개수: " + snap.size);
+  })
+  .catch(err => {
+      alert("에러: " + err.message);
+  });
 // 1초마다 갱신
 setInterval(update, 1000);
 update();
