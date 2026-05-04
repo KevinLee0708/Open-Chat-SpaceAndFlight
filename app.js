@@ -135,7 +135,9 @@ update();    container.innerHTML = "";
         `;
     });
 }
-
+db.collection("Dday").get().then(snap => {
+    alert("문서 개수: " + snap.size);
+});
 // 1초마다 갱신
 setInterval(update, 1000);
 update();
