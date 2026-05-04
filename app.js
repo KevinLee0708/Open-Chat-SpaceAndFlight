@@ -1,7 +1,8 @@
 // =======================
-// 🔥 Firebase 설정 (너 프로젝트 값 넣기)
+// 🔥 Firebase 설정
 // =======================
 alert("app.js 실행됨");
+
 const firebaseConfig = {
   apiKey: "AIzaSyCNNbsbuyLDfZN8XB5uzexBNaNA_MuJ8QI",
   authDomain: "website-kevinlee0708.firebaseapp.com",
@@ -16,136 +17,82 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // =======================
-// 📥 Firestore 데이터 로드
+// 📥 데이터 가져오기
 // =======================
 async function loadData() {
-    const snapshot = await db.collection("Dday").get();
+  const snapshot = await db.collection("Dday").get();
+  const data = [];
 
-    const data = [];
+  snapshot.forEach(doc => {
+    data.push(doc.data());
+  });
 
-    snapshot.forEach(doc => {
-        data.push(doc.data());
-    });
-
-    return data;
+  return data;
 }
 
 // =======================
-// ⏱️ 안전한 날짜 변환 함수 (핵심)
+// ⏱️ 날짜 처리
 // =======================
 function getDate(item) {
-    if (!item.date) return null;
+  if (!item.date) return null;
 
-    // Firestore Timestamp
-    if (item.date.toDate) {
-        return item.date.toDate();
-    }
+  if (item.date.toDate) {
+    return item.date.toDate();
+  }
 
-    // 문자열 fallback
-    const d = new Date(item.date);
+  const d = new Date(item.date);
+  if (isNaN(d.getTime())) return null;
 
-    if (isNaN(d.getTime())) return null;
-
-    return d;
+  return d;
 }
 
 // =======================
 // 📊 렌더링
 // =======================
 async function update() {
-    const container = document.getElementById("container");
-    container.innerHTML = "";
+  const container = document.getElementById("container");
+  container.innerHTML = "";
 
-    const data = await loadData();
-    const now = new Date().getTime();
+  const data = await loadData();
+  const now = new Date().getTime();
 
-    data.forEach(item => {
+  data.forEach(item => {
+    const target = getDate(item);
 
-        const targetDate = getDate(item);
+    let text = "";
 
-        let text = "";
+    if (!target) {
+      text = "⚠️ 날짜 오류";
+    } else {
+      let diff = target.getTime() - now;
 
-        // ❗ 날짜 오류 방지
-        if (!targetDate) {
-            text = "⚠️ 날짜 오류";
-        } else {
+      if (diff <= 0) {
+        text = "🎉 완료!";
+      } else {
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        diff %= (1000 * 60 * 60 * 24);
 
-            let diff = targetDate.getTime() - now;
+        const h = Math.floor(diff / (1000 * 60 * 60));
+        diff %= (1000 * 60 * 60);
 
-            if (diff <= 0) {
-                text = "🎉 완료!";
-            } else {
-                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-                diff %= (1000 * 60 * 60 * 24);
+        const m = Math.floor(diff / (1000 * 60));
+        diff %= (1000 * 60);
 
-                const h = Math.floor(diff / (1000 * 60 * 60));
-                diff %= (1000 * 60 * 60);
+        const s = Math.floor(diff / 1000);
 
-                const m = Math.floor(diff / (1000 * 60));
-                diff %= (1000 * 60);
+        text = `${d}일 ${h}시간 ${m}분 ${s}초`;
+      }
+    }
 
-                const s = Math.floor(diff / 1000);
-
-                text = `${d}일 ${h}시간 ${m}분 ${s}초`;
-            }
-        }
-
-        container.innerHTML += `
-            <div class="card">
-                <div class="name">${item.name || "이름 없음"}</div>
-                <div class="time">${text}</div>
-            </div>
-        `;
-    });
-}
-
-// 🔄 1초마다 갱신
-setInterval(update, 1000);
-update();    container.innerHTML = "";
-
-    const data = await loadData();
-    const now = new Date().getTime();
-
-    data.forEach(item => {
-        let diff = new Date(item.date).getTime() - now;
-
-        let text = "";
-
-        if (diff <= 0) {
-            text = "🎉 완료!";
-        } else {
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            diff %= (1000 * 60 * 60 * 24);
-
-            const h = Math.floor(diff / (1000 * 60 * 60));
-            diff %= (1000 * 60 * 60);
-
-            const m = Math.floor(diff / (1000 * 60));
-            diff %= (1000 * 60);
-
-            const s = Math.floor(diff / 1000);
-
-            text = `${d}일 ${h}시간 ${m}분 ${s}초`;
-        }
-
-        container.innerHTML += `
-            <div class="card">
-                <div class="name">${item.name}</div>
-                <div class="time">${text}</div>
-            </div>
-        `;
-    });
-}
-db.collection("Dday").get().then(snap => {
-    alert("문서 개수: " + snap.size);
-});
-db.collection("Dday").get()
-  .then(snap => {
-      alert("문서 개수: " + snap.size);
-  })
-  .catch(err => {
-      alert("에러: " + err.message);
+    container.innerHTML += `
+      <div class="card">
+        <div class="name">${item.name || "이름 없음"}</div>
+        <div class="time">${text}</div>
+      </div>
+    `;
   });
-// 1초마다 갱신
-setInterval(update, 1000);
+}
+
+// 🔄 실행
 update();
+setInterval(update, 1000);
