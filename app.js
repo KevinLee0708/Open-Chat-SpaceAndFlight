@@ -1,8 +1,3 @@
-// =======================
-// 🔥 Firebase 설정
-// =======================
-alert("app.js 실행됨");
-
 const firebaseConfig = {
   apiKey: "AIzaSyCNNbsbuyLDfZN8XB5uzexBNaNA_MuJ8QI",
   authDomain: "website-kevinlee0708.firebaseapp.com",
@@ -17,17 +12,22 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // =======================
-// 📥 데이터 가져오기
+// 📦 전역 데이터 저장
 // =======================
-async function loadData() {
-  const snapshot = await db.collection("Dday").get();
-  const data = [];
+let data = [];
 
+// =======================
+// 📥 데이터 한 번만 가져오기
+// =======================
+async function loadDataOnce() {
+  const snapshot = await db.collection("Dday").get();
+
+  data = [];
   snapshot.forEach(doc => {
     data.push(doc.data());
   });
 
-  return data;
+  render(); // 처음 렌더
 }
 
 // =======================
@@ -47,13 +47,12 @@ function getDate(item) {
 }
 
 // =======================
-// 📊 렌더링
+// 🎨 렌더링 (DB 안 건드림)
 // =======================
-async function update() {
+function render() {
   const container = document.getElementById("container");
   container.innerHTML = "";
 
-  const data = await loadData();
   const now = new Date().getTime();
 
   data.forEach(item => {
@@ -93,6 +92,8 @@ async function update() {
   });
 }
 
-// 🔄 실행
-update();
-setInterval(update, 1000);
+// =======================
+// 🚀 실행
+// =======================
+loadDataOnce();        // 데이터는 1번만
+setInterval(render, 1000); // 시간만 업데이트
