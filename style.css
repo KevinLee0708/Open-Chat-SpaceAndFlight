@@ -106,6 +106,7 @@ body {
 }
 
 /* ===== MOBILE ===== */
+
 @media (max-width: 768px) {
 
   .hamburger {
@@ -113,17 +114,27 @@ body {
   }
 
   .menu {
-    display: none;
+    display: flex;
     flex-direction: column;
     background: #111;
+
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+
+    max-height: 0;
+    overflow: hidden;
+
+    transition: max-height 0.3s ease;
   }
 
   .menu a {
-    padding: 10px;
+    padding: 12px;
     text-align: center;
   }
 
   .menu.active {
-    display: flex;
+    max-height: 300px;
   }
 }
