@@ -66,7 +66,7 @@ function render() {
       let diff = target.getTime() - now;
 
       if (diff <= 0) {
-        text = "🎉 완료!";
+        text = "🎉 벌칙 이행 완료!";
       } else {
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         diff %= (1000 * 60 * 60 * 24);
