@@ -1,13 +1,4 @@
 
-/* ===== 기본 ===== */
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #000;
-  color: white;
-  padding-top: 90px;
-}
-
 /* ===== NAV ===== */
 .navbar {
   position: fixed;
@@ -17,7 +8,6 @@ body {
   z-index: 1000;
 }
 
-/* 상단바 */
 .topbar {
   height: 60px;
   display: flex;
@@ -30,23 +20,32 @@ body {
   font-weight: bold;
 }
 
-/* 햄버거 */
 .hamburger {
   display: none;
   font-size: 24px;
   cursor: pointer;
 }
 
-/* ===== 메뉴 (공통 핵심) ===== */
+/* ===== MENU (핵심) ===== */
 .menu {
-  display: flex;
-  gap: 15px;
-  padding: 10px 20px;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100%;
 
+  display: flex;
+  flex-direction: column;
+  background: #111;
+
+  transform: translateY(-120%);
   transition: transform 0.3s ease;
+
+  z-index: 9999;
 }
 
 .menu a {
+  padding: 12px;
+  text-align: center;
   color: white;
   text-decoration: none;
   opacity: 0.8;
@@ -56,84 +55,13 @@ body {
   opacity: 1;
 }
 
-/* ===== HOME ===== */
-.home-container {
-  text-align: center;
-  margin-top: 80px;
-}
-
-.sub {
-  opacity: 0.7;
-}
-
-.button-box {
-  margin-top: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
-}
-
-.btn {
-  background: #222;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 10px;
-  text-decoration: none;
-  width: 250px;
-}
-
-.btn:hover {
-  background: #333;
-}
-
-.btn.danger {
-  background: #a00000;
-}
-
-.btn.danger:hover {
-  background: #c40000;
-}
-
-/* ===== SCROLL 애니메이션 ===== */
-.scroll-item {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: 0.8s ease;
-}
-
-.scroll-item.show {
-  opacity: 1;
+.menu.active {
   transform: translateY(0);
 }
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
-
   .hamburger {
     display: block;
-  }
-
-  .menu {
-    flex-direction: column;
-    background: #111;
-
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-
-    /* 핵심: display 안 씀 */
-    transform: translateY(-120%);
-    z-index: 999;
-  }
-
-  .menu a {
-    padding: 12px;
-    text-align: center;
-  }
-
-  .menu.active {
-    transform: translateY(0);
   }
 }
